@@ -19,7 +19,9 @@ router.post("/user/sign_up", async (req, res) => {
       });
     }
     if (
-      await User.findOne({ $or: [{ email: email }, { username: username }] })
+      await User.findOne({
+        $or: [{ email: email }, { "account.username": username }],
+      })
     ) {
       return res.status(200).json({
         message: "Email et/ou Utilisateur existent déjà dans notre base",
@@ -36,13 +38,17 @@ router.post("/user/sign_up", async (req, res) => {
     // save User
     const newUser = new User({
       email,
-      username,
-      name,
-      description,
+      account: {
+        username: username,
+        name: name,
+        description: description,
+      },
       token,
       hash,
       salt,
     });
+    console.log(newUser);
+
     await newUser.save();
 
     // Display

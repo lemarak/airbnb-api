@@ -17,6 +17,8 @@ mongoose.connect(process.env.MONGODB_URI, {
 // import des routes
 const userRoutes = require("./routes/user");
 app.use(userRoutes);
+const roomRoutes = require("./routes/room");
+app.use(roomRoutes);
 
 app.all("*", (req, res) => {
   res.status(404).json({ error: "Je suis perdu" });
